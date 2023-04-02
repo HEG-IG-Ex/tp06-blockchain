@@ -1,9 +1,14 @@
 package metier;
 
 import domaine.Block;
+import outils.InvalidIdException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Blockchain {
     private Block head;
+    private List<Block> allBlocks = new ArrayList<>();
 
     /**
      * Constructeur de la blockchain
@@ -13,6 +18,9 @@ public class Blockchain {
      * @param genesis - premier block de la blockchain.
      */
     public Blockchain(Block genesis) {
+        genesis.setId(0);
+        allBlocks.add(genesis);
+        this.head = genesis;
     }
 
     /**
@@ -25,8 +33,14 @@ public class Blockchain {
      * @param block instance de Block qui doit être ajoutée à la blockchain
      * @return le block modifié
      */
-    public Block insert(int id, Block block) {
-        return null;
+    public Block insert(int id, Block block) throws InvalidIdException {
+       if(id != head.getId()){ throw new InvalidIdException(); }
+       block.setPrev(head);
+       block.setIdPrev(id);
+       block.setId(++id);
+       head = block;
+       allBlocks.add(block);
+       return block;
     }
 
     /**
@@ -36,6 +50,15 @@ public class Blockchain {
      * @return le block trouvé
      */
     public Block search(int id) {
+
+        Block current = head;
+        while(current != null){
+            if(current.getId() == id){
+                return current;
+            }else {
+                current = current.getPrev();
+            }
+        }
         return null;
     }
 
@@ -49,7 +72,7 @@ public class Blockchain {
      * @return le block trouvé
      */
     public Block get(int id) {
-        return null;
+        return allBlocks.get(id);
     }
 
     /**
@@ -67,6 +90,19 @@ public class Blockchain {
      */
     @Override
     public String toString() {
-        return null;
+        Block b = this.head;
+        String output = "";
+        System.out.print("Blockchain: ");
+
+
+        // Version 2 - Traverse through the blockchain
+        while (b != null) {
+            // Print the data at current block
+            output =  b.toString() + " <= " + output;
+            // Go to prev block
+            b = b.getPrev();
+        }
+
+        return (output.substring(0, output.length() - 4));
     }
 }

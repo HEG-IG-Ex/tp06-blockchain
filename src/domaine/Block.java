@@ -17,13 +17,44 @@ public class Block {
         this.data = data;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public int getIdPrev() { return idPrev; }
-    public void setIdPrev(int idPrev) { this.idPrev = idPrev; }
-    public long getTimestamp() { return timestamp; }
-    public List<Transaction> getData() { return data; }
-    public Block getPrev() { return prev; }
-    public void setPrev(Block prev) { this.prev = prev; }
-    public int getHashBlock() { return h(h(getData()) + h(getTimestamp()) + getIdPrev());  }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdPrev() {
+        return idPrev;
+    }
+
+    public void setIdPrev(int idPrev) {
+        this.idPrev = idPrev;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public List<Transaction> getData() {
+        return data;
+    }
+
+    public Block getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Block prev) {
+        this.prev = prev;
+    }
+
+    public int getHashBlock() {
+        return h(h(getData()) + h(getTimestamp()) + getIdPrev());
+    }
+
+    @Override
+    public String toString() {
+        return "Block " + this.getId() + " (" + this.getHashBlock ()+ ")";
+    }
 }
